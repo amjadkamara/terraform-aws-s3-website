@@ -1,52 +1,175 @@
 # terraform-aws-s3-website
 
-Declarative Infrastructure as Code (IaC) project implementing an Amazon Web Services (AWS) S3 bucket configured for public static website hosting.
+Terraform Infrastructure as Code (IaC) project that provisions an
+**Amazon S3 static website** with public read access. The configuration
+creates the required AWS resources, uploads a website entry page, and
+outputs the website endpoint after deployment.
 
-## Architecture Highlights
+------------------------------------------------------------------------
 
-* **Resource Provisioning:** Creates an isolated S3 storage container with automated lifecycle teardown safeguards (`force_destroy`).
-* **Endpoint Hosting:** Configures S3 website routing rules mapped to `index.html`.
-* **Access Management:** Explicitly overrides default S3 account-level block settings and attaches a scoped IAM policy granting read permissions (`s3:GetObject`) to anonymous HTTP requests.
-* **Asset Lifecycle:** Manages local web asset synchronization using MD5 hashing to prevent unnecessary re-uploads (`etag`).
+# Features
 
----
+-   Creates an Amazon S3 bucket for static website hosting
+-   Configures the bucket as an S3 Website Endpoint
+-   Uploads a local `index.html` file automatically
+-   Configures a bucket policy allowing public read access
+-   Disables S3 Public Access Block settings required for website
+    hosting
+-   Uses Terraform state management for repeatable deployments
+-   Supports complete cleanup using `terraform destroy`
 
-## Prerequisites
+------------------------------------------------------------------------
 
-* **Terraform CLI:** Engine version `>= 1.0.0`
-* **AWS CLI:** Version `2.x` configured with active IAM access credentials (`aws configure`)
+# AWS Resources Created
 
----
+  -------------------------------------------------------------------------
+  Resource                                Purpose
+  --------------------------------------- ---------------------------------
+  `aws_s3_bucket`                         Creates the S3 bucket that hosts
+                                          the website
 
-## Execution Workflow
+  `aws_s3_bucket_website_configuration`   Enables static website hosting
+                                          with `index.html` as the default
+                                          page
 
-1. **Initialize Directory:**
-   ```bash
-   terraform init
-   ```
+  `aws_s3_bucket_public_access_block`     Allows public website access by
+                                          disabling restrictive public
+                                          access settings
 
-2. **Generate Speculative Execution Plan:**
-   ```bash
-   terraform plan
-   ```
+  `aws_s3_bucket_policy`                  Grants anonymous users permission
+                                          to read website files
+                                          (`s3:GetObject`)
 
-3. **Apply Targeted Infrastructure Changes:**
-   ```bash
-   terraform apply
-   ```
+  `aws_s3_object`                         Uploads the local `index.html`
+                                          file into the bucket
+  -------------------------------------------------------------------------
 
-4. **Verify Output Endpoint:**
-   Retrieve the generated `website_url` from the execution summary or execute:
-   ```bash
-   terraform output website_url
-   ```
+------------------------------------------------------------------------
 
----
+# Project Structure
 
-## Infrastructure De-provisioning
+``` text
+terraform-aws-s3-website/
+│
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── provider.tf
+├── index.html
+├── .terraform.lock.hcl
+└── README.md
+```
 
-To tear down all active cloud resources managed by this configuration:
+------------------------------------------------------------------------
 
-```bash
+# Prerequisites
+
+-   Terraform **1.0+**
+-   AWS CLI **v2**
+-   AWS account with sufficient IAM permissions
+
+Configure AWS credentials:
+
+``` bash
+aws configure
+```
+
+------------------------------------------------------------------------
+
+# Deployment
+
+## 1. Clone the Repository
+
+``` bash
+git clone https://github.com/amjadkamara/terraform-aws-s3-website.git
+cd terraform-aws-s3-website
+```
+
+## 2. Initialise Terraform
+
+``` bash
+terraform init
+```
+
+## 3. Review the Plan
+
+``` bash
+terraform plan
+```
+
+Expected output:
+
+``` text
+Plan: 5 to add, 0 to change, 0 to destroy.
+```
+
+Resources created:
+
+-   Amazon S3 Bucket
+-   Website Configuration
+-   Public Access Block Configuration
+-   Bucket Policy
+-   Website Object (`index.html`)
+
+## 4. Apply
+
+``` bash
+terraform apply
+```
+
+Type:
+
+``` text
+yes
+```
+
+## 5. Get Outputs
+
+``` bash
+terraform output website_url
+terraform output bucket_arn
+```
+
+------------------------------------------------------------------------
+
+# Destroy Infrastructure
+
+``` bash
 terraform destroy
 ```
+
+------------------------------------------------------------------------
+
+# Technologies
+
+-   Terraform
+-   AWS
+-   Amazon S3
+-   IAM
+-   AWS CLI
+
+------------------------------------------------------------------------
+
+# Learning Objectives
+
+-   Infrastructure as Code (IaC)
+-   Amazon S3 Static Website Hosting
+-   Terraform State Management
+-   Declarative Cloud Infrastructure
+-   AWS Resource Provisioning
+
+------------------------------------------------------------------------
+
+# Repository
+
+https://github.com/amjadkamara/terraform-aws-s3-website
+
+------------------------------------------------------------------------
+
+## Author
+
+**Amjad M. Kamara**
+
+Cloud Solutions Architect \| DevOps Engineer \| Infrastructure as Code
+\| AWS \| Terraform
+
