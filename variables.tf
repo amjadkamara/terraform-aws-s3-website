@@ -14,5 +14,5 @@ variable "aws_region" {
 variable "bucket_name" {
   description = "Globally unique identifier for the Amazon S3 bucket."
   type        = string
-  default     = "my-terraform-static-site-12345"
+  default     = "my-terraform-static-site-14890579"
 }
