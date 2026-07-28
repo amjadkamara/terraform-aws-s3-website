@@ -1,0 +1,29 @@
+# ==============================================================================
+# Git Exclusion Rules
+# Prevents state files, secrets, and operational binaries from being tracked.
+# ==============================================================================
+
+# Ignore local execution state and provider binaries
+.terraform/
+
+# Ignore state files containing sensitive infrastructure details
+*.tfstate
+*.tfstate.backup
+
+# Ignore custom variable definition files containing secrets
+*.tfvars
+*.tfvars.json
+
+# Ignore execution crash logs
+crash.log
+crash.*.log
+
+# Ignore local configuration overrides
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore local CLI configuration files
+.terraformrc
+terraform.rc
